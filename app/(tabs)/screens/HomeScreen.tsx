@@ -16,10 +16,22 @@ export default function HomeScreen() {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList, 'Home'>>();
 
   useEffect(() => {
-    fetch('https://www.themealdb.com/api/json/v1/1/random.php')
-      .then(response => response.json())
-      .then(data => setRecipes([data.meals[0]]));
+    const fetchRecipes = async () => {
+      const recipePromises = Array.from({ length: 10 }, () =>
+        fetch('https://www.themealdb.com/api/json/v1/1/random.php').then(response => response.json())
+      );
+
+      // Wait for all promises to resolve
+      const results = await Promise.all(recipePromises);
+
+      // Map the results and merge them into a single array
+      const fetchedRecipes = results.map(result => result.meals[0]);
+      setRecipes(fetchedRecipes);
+    };
+
+    fetchRecipes();
   }, []);
+
 
   return (
     <View style={styles.container}>
