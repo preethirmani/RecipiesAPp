@@ -1,52 +1,41 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, Button, FlatList, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import RecipesScreen from './RecipesScreen';
 import RecipeCard from '../components/RecipeCard';
+import { RootStackParamList } from '../navigation/StackNavigator';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 interface Recipe {
-  idMeal : string;
-  strMeal : string;
-  strMealThumb : string;
+  idMeal: string;
+  strMeal: string;
+  strMealThumb: string;
 }
 
-type RootStackParamList = {
-  HomeScreen: undefined;  // No parameters for HomeScreen
-  RecipeDetails: { recipe: any };  // RecipeDetails expects a 'recipe' parameter
-};
-
-type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'HomeScreen'>;
-
-export default function HomeScreen ({ navigation }: HomeScreenProps) {
+export default function HomeScreen() {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
-
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList, 'Home'>>();
 
   useEffect(() => {
     fetch('https://www.themealdb.com/api/json/v1/1/random.php')
       .then(response => response.json())
-      .then(data => setRecipes(data.meals));
+      .then(data => setRecipes([data.meals[0]]));
   }, []);
 
-
-
-  return(
-       <View style={styles.container}>
+  return (
+    <View style={styles.container}>
       <FlatList
         data={recipes}
         keyExtractor={(item) => item.idMeal}
         renderItem={({ item }) => (
           <TouchableOpacity
-            onPress={() => navigation.navigate('RecipeDetails', { recipe: item.idMeal })}
+            onPress={() => navigation.navigate('RecipeDetails', { recipeId: item.idMeal })}
           >
             <RecipeCard recipe={item} />
           </TouchableOpacity>
         )}
       />
     </View>
-
   );
-
 }
 
 const styles = StyleSheet.create({

@@ -3,7 +3,7 @@ import { View, FlatList, TouchableOpacity, StyleSheet, Text } from 'react-native
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import RecipeCard from '../components/RecipeCard';
 import { useNavigation } from '@react-navigation/native';
-import { RootStackParamList } from '../index';
+import { RootStackParamList } from '../navigation/StackNavigator';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 export default function FavoritesScreen() {

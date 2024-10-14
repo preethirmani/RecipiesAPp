@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Image, ScrollView, StyleSheet } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
-import { RootStackParamList } from '../index';
+import { RootStackParamList } from '../navigation/StackNavigator';
 
 type RecipeDetailsScreenRouteProp = RouteProp<RootStackParamList, 'RecipeDetails'>;
 
@@ -12,6 +12,7 @@ interface Props {
 export default function RecipesScreen({ route }: Props) {
   const [recipe, setRecipe] = useState<any>(null);
   const { recipeId } = route.params;
+  console.log('recipeId',recipeId);
 
   useEffect(() => {
     fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${recipeId}`)
