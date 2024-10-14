@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { View, FlatList, TouchableOpacity, StyleSheet, Text } from 'react-native';
+import { View, FlatList, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import RecipeCard from '../components/RecipeCard';
 import { useNavigation } from '@react-navigation/native';
-import { RootStackParamList } from '../navigation/StackNavigator';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../navigation/StackNavigator';
 
 export default function FavoritesScreen() {
   const [favorites, setFavorites] = useState<any[]>([]);
@@ -35,7 +35,7 @@ export default function FavoritesScreen() {
           )}
         />
       ) : (
-        <Text>No favorites yet.</Text>
+        <Text>No favorite recipes yet!</Text>
       )}
     </View>
   );

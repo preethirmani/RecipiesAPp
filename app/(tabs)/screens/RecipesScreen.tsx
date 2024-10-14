@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, ScrollView, StyleSheet } from 'react-native';
+import { View, Text, Image, ScrollView, StyleSheet,Alert, Button } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { RootStackParamList } from '../navigation/StackNavigator';
 
 type RecipeDetailsScreenRouteProp = RouteProp<RootStackParamList, 'RecipeDetails'>;
@@ -24,10 +25,39 @@ export default function RecipesScreen({ route }: Props) {
     return <Text>Loading...</Text>;
   }
 
+  const handleFavorite = async () => {
+
+      try {
+        const currentFavorites = await AsyncStorage.getItem('favorites');
+        let favorites = currentFavorites ? JSON.parse(currentFavorites) : [];
+        
+        // Check if the recipe is already in favorites
+      const isFavorite = favorites.some((fav: any) => fav.idMeal === recipe.idMeal);
+      if (isFavorite) {
+          Alert.alert('This recipe is already in your favorites!');
+          return;
+        }
+
+      // Add the new recipe to favorites
+      favorites.push(recipe);
+      await AsyncStorage.setItem('favorites', JSON.stringify(favorites));
+      Alert.alert('Recipe added to favorites!');
+      } catch (error) {
+        console.error('Error saving favorite', error);
+      }
+  };
+
+  if (!recipe) {
+    return <Text>Loading...</Text>;
+  }
+
+
+
   return (
     <ScrollView style={styles.container}>
       <Image source={{ uri: recipe.strMealThumb }} style={styles.image} />
       <Text style={styles.title}>{recipe.strMeal}</Text>
+      <Button title='Add to Favorites' onPress={handleFavorite} />
       <Text style={styles.subtitle}>Ingredients</Text>
       <View>
         {Object.keys(recipe)
