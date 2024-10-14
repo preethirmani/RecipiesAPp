@@ -5,6 +5,7 @@ import HomeScreen from '../screens/HomeScreen';
 import RecipesScreen from '../screens/RecipesScreen';
 import FavoritesScreen from '../screens/FavoritesScreen';
 import CategoriesScreen from '../screens/CategoriesScreen';
+import CategoryRecipe from '../screens/CategoryRecipe';
 
 // Define the types for each screen in the stack
 export type RootStackParamList = {
@@ -12,6 +13,7 @@ export type RootStackParamList = {
   RecipeDetails: { recipeId: string };
   Favorites: undefined;
   Categories: undefined;
+  CategoryRecipes: { category: string }; 
 };
 
 // Create stack and tab navigators
@@ -22,8 +24,10 @@ const Tab = createBottomTabNavigator();
 function RecipeStackNavigator() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Home" component={HomeScreen} options={{headerShown : false}} />
-      <Stack.Screen name="RecipeDetails" component={RecipesScreen} />
+      <Stack.Screen name='Home' component={HomeScreen} options={{headerShown : false}} />
+      <Stack.Screen name='RecipeDetails' component={RecipesScreen} />
+      <Stack.Screen name='Categories' component={CategoriesScreen}/>
+      <Stack.Screen name='CategoryRecipes' component={CategoryRecipe}/>
     </Stack.Navigator>
   );
 }
