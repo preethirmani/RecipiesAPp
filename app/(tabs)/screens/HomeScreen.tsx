@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, FlatList, TouchableOpacity, StyleSheet, useColorScheme } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import RecipeCard from '../components/RecipeCard';
 import { RootStackParamList } from '../navigation/StackNavigator';
@@ -14,6 +14,8 @@ interface Recipe {
 export default function HomeScreen() {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList, 'Home'>>();
+   const colorScheme = useColorScheme();
+
 
   useEffect(() => {
     const fetchRecipes = async () => {
@@ -34,7 +36,7 @@ export default function HomeScreen() {
 
 
   return (
-    <View style={styles.container}>
+    <View style={colorScheme === 'dark' ? styles.darkContainer : styles.lightContainer}>
       <FlatList
         data={recipes}
         keyExtractor={(item) => item.idMeal}
@@ -51,8 +53,20 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  lightContainer: {
     flex: 1,
     padding: 10,
+    backgroundColor: '#fff', // Light background
   },
+  darkContainer: {
+    flex: 1,
+    padding: 10,
+    backgroundColor: '#000', // Dark background
+  },
+   image: {
+    width: '100%',  // Takes up full width of the screen
+    height: undefined,
+  },
+
 });
+
